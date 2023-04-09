@@ -194,7 +194,13 @@ public class PostServiceImpl implements PostService {
 		
 		List<Post> top5posts = new ArrayList<>();
 		
-		for(int i=0;i<5;i++)
+		int size = 5;
+		if(posts.size()<5)
+		{
+			size = posts.size();
+		}
+		
+		for(int i=0;i<size;i++)
 		{
 			top5posts.add(posts.get(i));
 		}
