@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">FirstPost</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/postform.html">Upload_Post</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/updatepost.html">Update_Post</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/userform.html">Register_User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/updateuser.html">Update_User</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/userlist.html">UserList</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/postlist.html">postlist</a>
+          </li>
+  
+          <li class="nav-item">
+            <a class="nav-link" href="/postanalytics.html">post analytics</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/useranalytics.html">User analytics</a>
+          </li>
+    </div>
+  </div>
+</nav>
+ <div id="root">
+
+ </div>
+  
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</html>
+<script>
+    let array;
+    function getData(){
+    fetch('https://adobeassignment-production-af97.up.railway.app/analytics/posts')
+    .then((res)=> res.json())
+    .then((res)=>{
+        array=res;
+
+        displaydata(res); 
+        console.log(array);
+    })
+    .catch((eror)=>{
+        console.log(eror)
+    })
+}
+getData();
+// document.getElementById('mydiv').className += ' newClass';
+function displaydata(data)
+    {
+      console.log(data);
+      let rootbox  = document.querySelector("#root");
+      rootbox.innerHTML="";
+      data.forEach(function(elem) {
+
+            var card=document.createElement("div");
+            card.setAttribute("class","card");
+
+            var cardbody=document.createElement("div");
+            cardbody.setAttribute("class","card-body");
+
+            var cardbodybutton=document.createElement("div");
+            cardbodybutton.setAttribute("class","card-body");
+
+            var Name=document.createElement("h5");
+            Name.setAttribute("class","card-title");
+            Name.innerText="Posted by "+elem.user_id.name;
+
+            var postid=document.createElement("h5");
+            postid.setAttribute("class","card-title");
+            postid.innerText="Post Id :  "+elem.id;
+
+            var postbody=document.createElement("p");
+            postbody.innerText=elem.content;
+            postbody.setAttribute("class","card-text");
+
+            
+            
+            var viewbutton  = document.createElement("button");
+            viewbutton.innerHTML="view";
+            viewbutton.setAttribute("class","btn btn-primary mx-2");
+            viewbutton.addEventListener("click",()=>{
+                //  unlikePost();
+            });
+           var editbutton  = document.createElement("button");
+            editbutton.innerHTML="edit";
+            editbutton.setAttribute("class","btn btn-warning mx-2");
+            editbutton.addEventListener("click",()=>{
+                window.location.href = "updatepost.html";
+            });
+
+            var deletebutton  = document.createElement("button");
+            deletebutton.innerHTML="delete";
+            deletebutton.setAttribute("class","btn btn-danger mx-2");
+            deletebutton.addEventListener("click",()=>{
+                // deletePost(elem);
+            });
+ 
+            var likebutton  = document.createElement("button");
+            likebutton.setAttribute("class","btn btn-primary");
+            likebutton.innerHTML="like";
+            likebutton.addEventListener("click",()=>{
+                 likePost(elem);
+            });
+
+
+
+            var unlikebutton  = document.createElement("button");
+            unlikebutton.innerHTML="unlike";
+            unlikebutton.setAttribute("class","btn btn-primary mx-2");
+            unlikebutton.addEventListener("click",()=>{
+                 unlikePost(elem);
+            });
+
+            
+
+            cardbodybutton.append(viewbutton,editbutton,deletebutton, likebutton,unlikebutton)
+            cardbody.append(Name,postid,postbody,cardbodybutton);
+            card.append(cardbody);
+            document.querySelector("#root").append(card);
+        });
+    }
+
+    function deletePost(elem)
+    {
+        let id = elem.id;
+        const url = `https://adobeassignment-production-af97.up.railway.app/posts/${id}`;
+
+        fetch(url, {
+        method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then( (data) => { console.log(data) })
+        .catch(error => console.error(error));
+        
+        // displaydata(data);
+    };
+
+    function likePost(elem)
+    {
+        let id = elem.id;
+        const url = `https://adobeassignment-production-af97.up.railway.app/posts/${id}/like`;
+
+        fetch(url, {
+        method: 'GET'
+        })
+        .then(response => response.json())
+        .then( (data) => { console.log(data) })
+        .catch(error => console.error(error));
+    };
+
+        // let array;
+        function unlikePost(elem){
+            let id = elem.id;
+            fetch(`https://adobeassignment-production-af97.up.railway.app/posts/${id}/unlike`)
+            .then((res)=> res.json())
+            .then((res)=>{
+                array=res;
+                console.log(array);
+            })
+            .catch((eror)=>{
+                console.log(eror)
+            })
+        }
+
+</script>
