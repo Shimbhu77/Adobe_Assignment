@@ -43,21 +43,21 @@ Before running the API server, update the database config inside the application
 
 
   ```
-   server.port=8888 
-   
-   spring.datasource.url=jdbc:mysql://localhost:3306/adobe
-   
-   spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-   
-   spring.datasource.username=root
-   
-   spring.datasource.password=Root
-   
-   spring.jpa.hibernate.ddl-auto=update 
-   
-   spring.jpa.show-sql=true
-   
-   spring.mvc.pathmatch.matching-strategy = ANT_PATH_MATCHER
+server.port=8888
+
+spring.datasource.url=jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:adobe}
+
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.datasource.username=${DB_USERNAME:root}
+
+spring.datasource.password=${DB_PASSWORD:Root}
+ 
+ spring.jpa.hibernate.ddl-auto=update 
+ 
+ spring.jpa.show-sql=true
+ 
+ spring.mvc.pathmatch.matching-strategy = ANT_PATH_MATCHER
    ```
 
 ## API Root Endpoint for localhost
