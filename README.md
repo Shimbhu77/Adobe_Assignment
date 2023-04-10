@@ -12,6 +12,8 @@
 - MySQL
 - SpringData Jpa
 - Hibernate
+- Junit
+- Mockito
 
 
 # for fronted
